@@ -2,6 +2,7 @@ package pt.iade.ei.gamestore.ui.components
 
 
 import android.R.attr.onClick
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -89,6 +91,8 @@ fun GameDlcCardPurchase(dlcData: DLCData?) {
         }
     }
 
+    val context = LocalContext.current
+    val boughtTxt = stringResource(R.string.item_bought, dlcData?.DLCName ?: stringResource(R.string.not_found), "$${dlcData?.DLCPrice ?: 0.0}")
 
     Row(
         horizontalArrangement = Arrangement.End,
@@ -111,7 +115,10 @@ fun GameDlcCardPurchase(dlcData: DLCData?) {
         }
         Column {
             Button(
-                onClick = {},
+                onClick = {
+                    val toast = Toast.makeText(context, boughtTxt, Toast.LENGTH_LONG)
+                    toast.show()
+                },
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
             ) {
