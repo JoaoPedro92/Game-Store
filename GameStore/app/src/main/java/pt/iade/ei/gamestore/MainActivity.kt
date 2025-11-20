@@ -41,7 +41,7 @@ import pt.iade.ei.gamestore.ui.theme.GameStoreTheme
 
 val shopGames = listOf(
     GameData(1, "GTA V", "A very good game!", R.drawable.gtav),
-    GameData(2, "Fifa 25", "Classic game to break controllers!", R.drawable.fifa25),
+    GameData(2, "FIFA 26", "Classic game to break controllers!", R.drawable.fifa25),
     GameData(3, "Minecraft", "Well, here we go again!", R.drawable.minecraft)
 )
 
