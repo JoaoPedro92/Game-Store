@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Game Store</string>
+    <string name="company_name">Name of the company</string>
+    <string name="purchasable_items">Purchasable Items</string>
+    <string name="not_found">Not found</string>
+    <string name="buy_dlc">Buy with 1-click</string>
 </resources>

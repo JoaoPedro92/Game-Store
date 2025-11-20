@@ -1,0 +1,182 @@
+package pt.iade.ei.gamestore
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import kotlinx.coroutines.launch
+import pt.iade.ei.gamestore.ui.classes.DLCData
+import pt.iade.ei.gamestore.ui.classes.GameData
+import pt.iade.ei.gamestore.ui.components.GameDlcCardPurchase
+import pt.iade.ei.gamestore.ui.components.GenerateGameDlcCards
+import pt.iade.ei.gamestore.ui.theme.GameStoreTheme
+
+val shopGamesDLCs = listOf(
+    DLCData(1, 1, "Shark Card 500", "Buy now coins for your game, higher prices, higher rewards :P", 9.99, R.drawable.sharkcards),
+    DLCData(2, 1, "Shark Card 1000", "Buy now coins for your game, higher prices, higher rewards :P", 14.99, R.drawable.sharkcards),
+    DLCData(3, 1, "Shark Card 1500", "Buy now coins for your game, higher prices, higher rewards :P", 19.99, R.drawable.sharkcards),
+)
+
+class GameDetailActivity(gameData: GameData) : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            GameStoreTheme {
+                GameDetail()
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GameDetail() {
+    Column(
+        modifier = Modifier
+            .padding(all = 14.dp)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(60.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "return",
+                tint = Color.Black,
+            )
+
+            Text(
+                text = "Name of the Game",
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .padding(horizontal = 24.dp),
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Icon(
+                imageVector = Icons.Outlined.FavoriteBorder,
+                contentDescription = "return",
+                tint = Color.Black,
+            )
+        }
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        Row(
+            modifier = Modifier
+                .height(130.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+        ) {
+            Column {
+                Image(
+                    painter = painterResource(
+                        id = R.drawable.gtav
+                    ),
+                    contentDescription = "Imagem",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .width(130.dp)
+                        .clip(RoundedCornerShape(30.dp))
+                )
+            }
+            Column {
+                Text(
+                    text = "A description about the game and about things related to it.\nPut quite a bit of text here as if it were real. Take note of how the text is aligned.",
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    lineHeight = 20.sp,
+                    color = Color.DarkGray,
+                    modifier = Modifier
+                        .padding(all = 13.dp)
+                )
+            }
+        }
+
+        Text(
+            text = stringResource(R.string.purchasable_items),
+            color = Color.Black,
+            fontSize = 22.sp,
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(vertical = 20.dp),
+        )
+
+        GenerateGameDlcCards(shopGamesDLCs, 1)
+    }
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+fun CheckForDLCDetails(dlcData: DLCData?, onClose: () -> Unit) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) { sheetState.expand() }
+
+    ModalBottomSheet(
+        onDismissRequest = {
+            scope.launch {
+                sheetState.hide()
+                onClose()
+            }
+        },
+        sheetState = sheetState
+    ) {
+        DLCDataContent(
+            dlcData = dlcData,
+        )
+    }
+}
+
+@Composable
+fun DLCDataContent(dlcData: DLCData?) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.9f)
+            .padding(8.dp)
+    ) {
+        GameDlcCardPurchase(dlcData)
+    }
+}
