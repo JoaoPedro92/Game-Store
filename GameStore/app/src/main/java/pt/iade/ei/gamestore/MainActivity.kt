@@ -1,5 +1,6 @@
 package pt.iade.ei.gamestore
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,11 +21,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import pt.iade.ei.gamestore.ui.classes.DLCData
 import pt.iade.ei.gamestore.ui.classes.GameData
 import pt.iade.ei.gamestore.ui.components.BigGameCard
+import pt.iade.ei.gamestore.ui.components.NavigationBar
 import pt.iade.ei.gamestore.ui.theme.GameStoreTheme
 
 val shopGames = listOf(
@@ -47,7 +51,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GameStoreTheme {
-                GeneralPage()
+                Scaffold(
+                    bottomBar = {
+                        NavigationBar(
+                            context = this,
+                            selectedIndex = 0
+                        )
+                    }
+                ) { padding ->
+                    GeneralPage()
+                }
             }
         }
     }
@@ -56,6 +69,8 @@ class MainActivity : ComponentActivity() {
 @Preview(showBackground = true)
 @Composable
 fun GeneralPage() {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -106,8 +121,19 @@ fun GeneralPage() {
                 .height(560.dp)
         ) {
             items(shopGames) { gameData ->
-                BigGameCard(gameData)
+                BigGameCard(gameData, context)
             }
         }
     }
+}
+
+@Composable
+fun GetGameById(gameId: Int): GameData? {
+    shopGames.forEach { gameData ->
+        if (gameData.id == gameId) {
+            return gameData
+        }
+    }
+
+    return null;
 }

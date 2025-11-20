@@ -1,7 +1,7 @@
 package pt.iade.ei.gamestore.ui.components
 
 
-import android.R.attr.onClick
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -25,15 +24,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pt.iade.ei.gamestore.GameDetailActivity
 import pt.iade.ei.gamestore.R
 import pt.iade.ei.gamestore.ui.classes.DLCData
 
 //@Preview(showBackground = true)
 @Composable
-fun GameDlcCardPurchase(dlcData: DLCData?) {
+fun GameDlcCardPurchase(dlcData: DLCData?, onPurchase: () -> Unit) {
     Text(
         text = dlcData?.DLCName ?: stringResource(R.string.not_found),
         fontSize = 19.sp,
@@ -118,6 +117,8 @@ fun GameDlcCardPurchase(dlcData: DLCData?) {
                 onClick = {
                     val toast = Toast.makeText(context, boughtTxt, Toast.LENGTH_LONG)
                     toast.show()
+
+                    onPurchase()
                 },
                 modifier = Modifier
                     .padding(horizontal = 5.dp)

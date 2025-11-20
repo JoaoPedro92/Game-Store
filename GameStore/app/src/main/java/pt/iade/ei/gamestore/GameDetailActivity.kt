@@ -1,10 +1,12 @@
 package pt.iade.ei.gamestore
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,15 +34,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import pt.iade.ei.gamestore.ui.classes.DLCData
-import pt.iade.ei.gamestore.ui.classes.GameData
 import pt.iade.ei.gamestore.ui.components.GameDlcCardPurchase
 import pt.iade.ei.gamestore.ui.components.GenerateGameDlcCards
 import pt.iade.ei.gamestore.ui.theme.GameStoreTheme
@@ -51,21 +52,27 @@ val shopGamesDLCs = listOf(
     DLCData(3, 1, "Shark Card 1500", "Buy now coins for your game, higher prices, higher rewards :P", 19.99, R.drawable.sharkcards),
 )
 
-class GameDetailActivity(gameData: GameData) : ComponentActivity() {
+class GameDetailActivity() : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        var gameId = intent.getSerializableExtra("gameId") as Int
+
         setContent {
             GameStoreTheme {
-                GameDetail()
+                GameDetail(gameId)
             }
         }
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
-fun GameDetail() {
+fun GameDetail(gameId: Int) {
+    val context = LocalContext.current
+    var gameData = GetGameById(gameId)
+
     Column(
         modifier = Modifier
             .padding(all = 14.dp)
@@ -82,10 +89,15 @@ fun GameDetail() {
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "return",
                 tint = Color.Black,
+                modifier = Modifier
+                    .clickable {
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                    }
             )
 
             Text(
-                text = "Name of the Game",
+                text = gameData?.name ?: stringResource(R.string.not_found),
                 fontSize = 20.sp,
                 modifier = Modifier
                     .padding(horizontal = 24.dp),
@@ -111,7 +123,7 @@ fun GameDetail() {
             Column {
                 Image(
                     painter = painterResource(
-                        id = R.drawable.gtav
+                        id = gameData?.imageRes ?: R.drawable.defaultimage
                     ),
                     contentDescription = "Imagem",
                     contentScale = ContentScale.Crop,
@@ -122,7 +134,7 @@ fun GameDetail() {
             }
             Column {
                 Text(
-                    text = "A description about the game and about things related to it.\nPut quite a bit of text here as if it were real. Take note of how the text is aligned.",
+                    text = gameData?.description ?: stringResource(R.string.not_found),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.SemiBold,
                     lineHeight = 20.sp,
@@ -142,13 +154,13 @@ fun GameDetail() {
                 .padding(vertical = 20.dp),
         )
 
-        GenerateGameDlcCards(shopGamesDLCs, 1)
+        GenerateGameDlcCards(shopGamesDLCs, gameData?.id)
     }
 }
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun CheckForDLCDetails(dlcData: DLCData?, onClose: () -> Unit) {
+fun CheckForDLCDetails(dlcData: DLCData?, onClose: () -> Unit, onPurchase: () -> Unit) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false)
     val scope = rememberCoroutineScope()
 
@@ -165,18 +177,25 @@ fun CheckForDLCDetails(dlcData: DLCData?, onClose: () -> Unit) {
     ) {
         DLCDataContent(
             dlcData = dlcData,
+            onPurchase = {
+                scope.launch {
+                    sheetState.hide()
+                    onClose()
+                    onPurchase()
+                }
+            }
         )
     }
 }
 
 @Composable
-fun DLCDataContent(dlcData: DLCData?) {
+fun DLCDataContent(dlcData: DLCData?, onPurchase: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.9f)
             .padding(8.dp)
     ) {
-        GameDlcCardPurchase(dlcData)
+        GameDlcCardPurchase(dlcData, onPurchase)
     }
 }

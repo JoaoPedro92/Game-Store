@@ -1,7 +1,10 @@
 package pt.iade.ei.gamestore.ui.components
 
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,17 +26,23 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pt.iade.ei.gamestore.GameDetailActivity
 import pt.iade.ei.gamestore.R
 import pt.iade.ei.gamestore.ui.classes.GameData
 
 //@Preview(showBackground = true)
 @Composable
-fun BigGameCard(gameData: GameData) {
+fun BigGameCard(gameData: GameData, context: Context) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
             .padding(vertical = 3.dp)
+            .clickable {
+                val intent = Intent(context, GameDetailActivity::class.java)
+                intent.putExtra("gameId", gameData.id)
+                context.startActivity(intent)
+            }
     ) {
         Box(
             modifier = Modifier

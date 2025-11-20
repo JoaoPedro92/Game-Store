@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,12 +31,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pt.iade.ei.gamestore.CheckForDLCDetails
-import pt.iade.ei.gamestore.shopGames
 import pt.iade.ei.gamestore.ui.classes.DLCData
 
 //@Preview(showBackground = true)
 @Composable
-fun GenerateGameDlcCards(dlcData: List<DLCData>, gameId: Int) {
+fun GenerateGameDlcCards(dlcData: List<DLCData>, gameId: Int?) {
     var selectedDLC by remember { mutableStateOf<DLCData?>(null) }
 
     LazyColumn(
@@ -46,7 +44,7 @@ fun GenerateGameDlcCards(dlcData: List<DLCData>, gameId: Int) {
             .height(560.dp)
     ) {
         items(dlcData) { DLC ->
-            if (DLC.gameId == gameId) {
+            if (gameId != null && DLC.gameId == gameId) {
                 Row(
                     modifier = Modifier
                         .height(120.dp)
@@ -116,6 +114,9 @@ fun GenerateGameDlcCards(dlcData: List<DLCData>, gameId: Int) {
         CheckForDLCDetails(
             selectedDLC,
             onClose = {
+                selectedDLC = null
+            },
+            onPurchase = {
                 selectedDLC = null
             }
         )
