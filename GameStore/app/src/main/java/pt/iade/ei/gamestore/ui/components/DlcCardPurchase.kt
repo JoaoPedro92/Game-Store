@@ -47,7 +47,7 @@ fun GameDlcCardPurchase(dlcData: DLCData?, onPurchase: () -> Unit) {
 
     Row(
         modifier = Modifier
-            .height(140.dp)
+            //.height(140.dp)
             .padding(bottom = 10.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.Start,
@@ -60,7 +60,8 @@ fun GameDlcCardPurchase(dlcData: DLCData?, onPurchase: () -> Unit) {
                 contentDescription = "Imagem",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .width(140.dp)
+                    .width(130.dp)
+                    .height(140.dp)
                     .clip(RoundedCornerShape(30.dp))
             )
         }
