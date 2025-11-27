@@ -24,6 +24,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,17 +38,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pt.iade.ei.gamestore.data.DLCsRepository
+import pt.iade.ei.gamestore.data.GamesRepository
 import pt.iade.ei.gamestore.ui.classes.DLCData
 import pt.iade.ei.gamestore.ui.classes.GameData
 import pt.iade.ei.gamestore.ui.components.BigGameCard
 import pt.iade.ei.gamestore.ui.components.NavigationBar
+import pt.iade.ei.gamestore.ui.controllers.GetShopGames
 import pt.iade.ei.gamestore.ui.theme.GameStoreTheme
-
-val shopGames = listOf(
-    GameData(1, "GTA V", "A very good game!", R.drawable.gtav),
-    GameData(2, "FIFA 26", "Classic game to break controllers!", R.drawable.fifa25),
-    GameData(3, "Minecraft", "Well, here we go again!", R.drawable.minecraft)
-)
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,10 +55,7 @@ class MainActivity : ComponentActivity() {
             GameStoreTheme {
                 Scaffold(
                     bottomBar = {
-                        NavigationBar(
-                            context = this,
-                            selectedIndex = 0
-                        )
+                        NavigationBar(context = this)
                     }
                 ) { padding ->
                     GeneralPage()
@@ -115,25 +114,26 @@ fun GeneralPage() {
 
         Spacer(modifier = Modifier.height(30.dp))
 
+        var gameList by remember { mutableStateOf<List<GameData>>(emptyList()) }
+
+        LaunchedEffect(Unit) {
+            if (GamesRepository.hasCache()) {
+                gameList = GamesRepository.getCached()
+            } else {
+                GamesRepository.updateGamesList { list ->
+                    gameList = list
+                }
+            }
+        }
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(560.dp)
         ) {
-            items(shopGames) { gameData ->
+            items(gameList) { gameData ->
                 BigGameCard(gameData, context)
             }
         }
     }
-}
-
-@Composable
-fun GetGameById(gameId: Int): GameData? {
-    shopGames.forEach { gameData ->
-        if (gameData.id == gameId) {
-            return gameData
-        }
-    }
-
-    return null;
 }

@@ -71,3 +71,41 @@ fun BigGameCard(gameData: GameData, context: Context) {
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun BigGameCardPreview() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
+            .padding(vertical = 3.dp)
+            .clickable { }
+    ) {
+        Box(
+            modifier = Modifier
+                .height(170.dp)
+        ) {
+            Image(
+                painter = painterResource(
+                    id = R.drawable.defaultimage
+                ),
+                contentDescription = "Imagem",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .alpha(0.8f)
+            )
+
+            Text(
+                text = stringResource(R.string.game_name),
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(13.dp)
+            )
+        }
+    }
+}

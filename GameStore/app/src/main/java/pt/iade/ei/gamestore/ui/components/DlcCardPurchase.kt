@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pt.iade.ei.gamestore.GameDetailActivity
@@ -121,6 +122,100 @@ fun GameDlcCardPurchase(dlcData: DLCData?, onPurchase: () -> Unit) {
 
                     onPurchase()
                 },
+                modifier = Modifier
+                    .padding(horizontal = 5.dp)
+            ) {
+                Text(
+                    stringResource(R.string.buy_dlc)
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun GameDlcCardPurchasePreview() {
+    Text(
+        text = stringResource(R.string.game_name),
+        fontSize = 19.sp,
+        fontWeight = FontWeight.SemiBold,
+        lineHeight = 20.sp,
+        color = Color.Black,
+        modifier = Modifier
+            .padding(horizontal = 5.dp)
+    )
+
+    Spacer(modifier = Modifier.height(13.dp))
+
+    Row(
+        modifier = Modifier
+            //.height(140.dp)
+            .padding(bottom = 10.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start,
+    ) {
+        Column {
+            Image(
+                painter = painterResource(
+                    id = R.drawable.defaultimage
+                ),
+                contentDescription = "Imagem",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .width(130.dp)
+                    .height(140.dp)
+                    .clip(RoundedCornerShape(30.dp))
+            )
+        }
+        Column {
+            Spacer(modifier = Modifier.height(13.dp))
+
+            Text(
+                text = stringResource(R.string.not_found),
+                fontSize = 19.sp,
+                fontWeight = FontWeight.SemiBold,
+                lineHeight = 20.sp,
+                color = Color.Black,
+                modifier = Modifier
+                    .padding(horizontal = 13.dp)
+            )
+
+            Spacer(modifier = Modifier.height(5.dp))
+
+            Text(
+                text = stringResource(R.string.not_found),
+                fontSize = 16.sp,
+                lineHeight = 20.sp,
+                color = Color.DarkGray,
+                modifier = Modifier
+                    .padding(horizontal = 13.dp)
+            )
+        }
+    }
+
+    Row(
+        horizontalArrangement = Arrangement.End,
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Column(
+            verticalArrangement = Arrangement.Center
+        )
+        {
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Text(
+                text = "$4.0",
+                fontSize = 19.sp,
+                color = Color.DarkGray,
+                modifier = Modifier
+                    .padding(horizontal = 13.dp)
+            )
+        }
+        Column {
+            Button(
+                onClick = {},
                 modifier = Modifier
                     .padding(horizontal = 5.dp)
             ) {

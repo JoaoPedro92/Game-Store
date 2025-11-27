@@ -5,4 +5,5 @@
     <string name="not_found">Not found</string>
     <string name="buy_dlc">Buy with 1-click</string>
     <string name="item_bought">Acabou de comprar o item %1$s por %2$s</string>
+    <string name="game_name">Name game</string>
 </resources>
