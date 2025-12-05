@@ -1,7 +1,7 @@
 package pt.iade.ei.gamestore.ui.controllers
 
 import pt.iade.ei.gamestore.R
-import pt.iade.ei.gamestore.ui.classes.DLCData
+import pt.iade.ei.gamestore.ui.models.DLCData
 
 val shopGamesDLCs = listOf(
     DLCData(1, 1, "Shark Card 500", "Buy now coins for your game, higher prices, higher rewards, this pack includes 500 coins", 9.99, R.drawable.sharkcards),

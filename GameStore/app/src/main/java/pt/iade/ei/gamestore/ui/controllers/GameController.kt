@@ -1,11 +1,8 @@
 package pt.iade.ei.gamestore.ui.controllers
 
 
-import androidx.compose.runtime.Composable
 import pt.iade.ei.gamestore.R
-import pt.iade.ei.gamestore.data.GamesRepository
-import pt.iade.ei.gamestore.ui.classes.DLCData
-import pt.iade.ei.gamestore.ui.classes.GameData
+import pt.iade.ei.gamestore.ui.models.GameData
 
 val shopGames = listOf(
     GameData(1, "GTA V", "A glorious mess in Los Santos: epic heists, crazy characters, and total freedom to do.", R.drawable.gtav),

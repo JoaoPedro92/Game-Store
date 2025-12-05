@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pt.iade.ei.gamestore.CheckForDLCDetails
 import pt.iade.ei.gamestore.R
-import pt.iade.ei.gamestore.ui.classes.DLCData
+import pt.iade.ei.gamestore.ui.models.DLCData
 
 //@Preview(showBackground = true)
 @Composable

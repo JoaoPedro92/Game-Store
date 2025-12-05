@@ -1,4 +1,4 @@
-package pt.iade.ei.gamestore.ui.classes
+package pt.iade.ei.gamestore.ui.models
 
 data class GameData(
     val id: Int,

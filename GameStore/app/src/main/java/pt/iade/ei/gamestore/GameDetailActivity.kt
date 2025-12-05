@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -48,8 +47,8 @@ import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import pt.iade.ei.gamestore.data.DLCsRepository
 import pt.iade.ei.gamestore.data.GamesRepository
-import pt.iade.ei.gamestore.ui.classes.DLCData
-import pt.iade.ei.gamestore.ui.classes.GameData
+import pt.iade.ei.gamestore.ui.models.DLCData
+import pt.iade.ei.gamestore.ui.models.GameData
 import pt.iade.ei.gamestore.ui.components.GameDlcCardPurchase
 import pt.iade.ei.gamestore.ui.components.GenerateGameDlcCards
 import pt.iade.ei.gamestore.ui.theme.GameStoreTheme

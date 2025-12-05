@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pt.iade.ei.gamestore.GameDetailActivity
 import pt.iade.ei.gamestore.R
-import pt.iade.ei.gamestore.ui.classes.GameData
+import pt.iade.ei.gamestore.ui.models.GameData
 
 //@Preview(showBackground = true)
 @Composable

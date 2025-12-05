@@ -1,7 +1,6 @@
 package pt.iade.ei.gamestore.data
 
-import pt.iade.ei.gamestore.ui.classes.GameData
-import pt.iade.ei.gamestore.ui.controllers.GetShopDLCs
+import pt.iade.ei.gamestore.ui.models.GameData
 import pt.iade.ei.gamestore.ui.controllers.GetShopGames
 import kotlin.collections.List
 

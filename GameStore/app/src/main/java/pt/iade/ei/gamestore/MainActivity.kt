@@ -1,6 +1,5 @@
 package pt.iade.ei.gamestore
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -38,13 +37,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pt.iade.ei.gamestore.data.DLCsRepository
 import pt.iade.ei.gamestore.data.GamesRepository
-import pt.iade.ei.gamestore.ui.classes.DLCData
-import pt.iade.ei.gamestore.ui.classes.GameData
+import pt.iade.ei.gamestore.ui.models.GameData
 import pt.iade.ei.gamestore.ui.components.BigGameCard
 import pt.iade.ei.gamestore.ui.components.NavigationBar
-import pt.iade.ei.gamestore.ui.controllers.GetShopGames
 import pt.iade.ei.gamestore.ui.theme.GameStoreTheme
 
 class MainActivity : ComponentActivity() {
