@@ -42,12 +42,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 import pt.iade.ei.gamestore.data.DLCsRepository
 import pt.iade.ei.gamestore.data.GamesRepository
 import pt.iade.ei.gamestore.ui.classes.DLCData
+import pt.iade.ei.gamestore.ui.classes.GameData
 import pt.iade.ei.gamestore.ui.components.GameDlcCardPurchase
 import pt.iade.ei.gamestore.ui.components.GenerateGameDlcCards
 import pt.iade.ei.gamestore.ui.theme.GameStoreTheme
@@ -208,5 +210,112 @@ fun DLCDataContent(dlcData: DLCData?, onPurchase: () -> Unit) {
             .padding(8.dp)
     ) {
         GameDlcCardPurchase(dlcData, onPurchase)
+    }
+}
+
+
+
+///////////////
+
+@Preview(showBackground = true)
+@Composable
+fun GameDetailPreview() {
+    val context = LocalContext.current
+    var gameData = GameData(3, "Minecraft", "Well, here we go again!", R.drawable.minecraft)
+
+    Column(
+        modifier = Modifier
+            .padding(all = 14.dp)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.height(60.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start
+        ) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                contentDescription = "return",
+                tint = Color.Black,
+                modifier = Modifier
+                    .clickable {
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                    }
+            )
+
+            Text(
+                text = gameData?.name ?: stringResource(R.string.not_found),
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .padding(horizontal = 24.dp),
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Icon(
+                imageVector = Icons.Outlined.FavoriteBorder,
+                contentDescription = "return",
+                tint = Color.Black,
+            )
+        }
+
+        Spacer(modifier = Modifier.height(25.dp))
+
+        Row(
+            modifier = Modifier
+                .height(130.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+        ) {
+            Column {
+                Image(
+                    painter = painterResource(
+                        id = gameData?.imageRes ?: R.drawable.defaultimage
+                    ),
+                    contentDescription = "Imagem",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .width(130.dp)
+                        .clip(RoundedCornerShape(30.dp))
+                )
+            }
+            Column {
+                Text(
+                    text = gameData?.description ?: stringResource(R.string.not_found),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    lineHeight = 20.sp,
+                    color = Color.DarkGray,
+                    modifier = Modifier
+                        .padding(all = 13.dp)
+                )
+            }
+        }
+
+        Text(
+            text = stringResource(R.string.purchasable_items),
+            color = Color.Black,
+            fontSize = 22.sp,
+            modifier = Modifier
+                .align(Alignment.Start)
+                .padding(vertical = 20.dp),
+        )
+
+        var dlcList by remember { mutableStateOf<List<DLCData>>(emptyList()) }
+
+        LaunchedEffect(Unit) {
+            if (DLCsRepository.hasCache()) {
+                dlcList = DLCsRepository.getCached()
+            } else {
+                DLCsRepository.updateDLCList { dlcData ->
+                    dlcList = dlcData
+                }
+            }
+        }
+
+        GenerateGameDlcCards(dlcList, gameData?.id)
     }
 }
