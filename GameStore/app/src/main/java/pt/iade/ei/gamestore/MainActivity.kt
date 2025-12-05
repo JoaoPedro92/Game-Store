@@ -49,13 +49,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GameStoreTheme {
-                Scaffold(
-                    bottomBar = {
-                        NavigationBar(context = this)
-                    }
-                ) { padding ->
-                    GeneralPage()
-                }
+
+                GeneralPage()
             }
         }
     }
@@ -66,69 +61,75 @@ class MainActivity : ComponentActivity() {
 fun GeneralPage() {
     val context = LocalContext.current
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Spacer(modifier = Modifier.height(60.dp))
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 24.dp),
-            horizontalArrangement = Arrangement.End
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Notifications,
-                contentDescription = "return",
-                tint = Color.Black,
-                modifier = Modifier.size(20.dp)
-            )
-
-            Spacer(modifier = Modifier.width(20.dp))
-
-            Icon(
-                imageVector = Icons.Outlined.Settings,
-                contentDescription = "return",
-                tint = Color.Black,
-                modifier = Modifier.size(20.dp)
-            )
+    Scaffold(
+        bottomBar = {
+            NavigationBar(context = context)
         }
-
-        Spacer(modifier = Modifier.height(50.dp))
-
-        Text(
-            text = stringResource(R.string.company_name),
-            color = Color.Black,
-            fontWeight = FontWeight.Bold,
-            fontSize = 25.sp,
+    ) { padding ->
+        Column(
             modifier = Modifier
-                .align(Alignment.Start)
-                .padding(horizontal = 24.dp),
-        )
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(60.dp))
 
-        Spacer(modifier = Modifier.height(30.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp),
+                horizontalArrangement = Arrangement.End
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Notifications,
+                    contentDescription = "return",
+                    tint = Color.Black,
+                    modifier = Modifier.size(20.dp)
+                )
 
-        var gameList by remember { mutableStateOf<List<GameData>>(emptyList()) }
+                Spacer(modifier = Modifier.width(20.dp))
 
-        LaunchedEffect(Unit) {
-            if (GamesRepository.hasCache()) {
-                gameList = GamesRepository.getCached()
-            } else {
-                GamesRepository.updateGamesList { list ->
-                    gameList = list
+                Icon(
+                    imageVector = Icons.Outlined.Settings,
+                    contentDescription = "return",
+                    tint = Color.Black,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(50.dp))
+
+            Text(
+                text = stringResource(R.string.company_name),
+                color = Color.Black,
+                fontWeight = FontWeight.Bold,
+                fontSize = 25.sp,
+                modifier = Modifier
+                    .align(Alignment.Start)
+                    .padding(horizontal = 24.dp),
+            )
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            var gameList by remember { mutableStateOf<List<GameData>>(emptyList()) }
+
+            LaunchedEffect(Unit) {
+                if (GamesRepository.hasCache()) {
+                    gameList = GamesRepository.getCached()
+                } else {
+                    GamesRepository.updateGamesList { list ->
+                        gameList = list
+                    }
                 }
             }
-        }
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(560.dp)
-        ) {
-            items(gameList) { gameData ->
-                BigGameCard(gameData, context)
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(560.dp)
+            ) {
+                items(gameList) { gameData ->
+                    BigGameCard(gameData, context)
+                }
             }
         }
     }
