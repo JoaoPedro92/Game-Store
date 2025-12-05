@@ -33,16 +33,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import pt.iade.ei.gamestore.CheckForDLCDetails
+import pt.iade.ei.gamestore.R
 import pt.iade.ei.gamestore.ui.classes.DLCData
 
 //@Preview(showBackground = true)
@@ -60,7 +64,7 @@ fun NavigationBar(context: Context) {
                     contentDescription = "Featured")
                    },
             label = {
-                Text("Featured")
+                Text(stringResource(R.string.featured))
             }
         )
 
@@ -68,12 +72,19 @@ fun NavigationBar(context: Context) {
             selected = selectedIndex == 1,
             onClick = { selectedIndex = 1 },
             icon = {
-                Icon(
-                    Icons.Default.ExitToApp,
-                    contentDescription = "History")
-                   },
+                Image(
+                    painter = painterResource(
+                        id = R.drawable.archive
+                    ),
+                    contentDescription = "Imagem",
+                    contentScale = ContentScale.Crop,
+                    colorFilter = ColorFilter.tint(
+                        color = Color.Black,
+                    ),
+                )
+            },
             label = {
-                Text("History")
+                Text(stringResource(R.string.history))
             }
         )
 
@@ -86,7 +97,7 @@ fun NavigationBar(context: Context) {
                     contentDescription = "Profile"
                 ) },
             label = {
-                Text("Profile")
+                Text(stringResource(R.string.profile))
             }
         )
     }
@@ -107,20 +118,27 @@ fun NavigationBarPreview() {
                     contentDescription = "Featured")
             },
             label = {
-                Text("Featured")
+                Text(stringResource(R.string.featured))
             }
         )
 
         NavigationBarItem(
-            selected = false,
+            selected = selectedIndex == 1,
             onClick = { selectedIndex = 1 },
             icon = {
-                Icon(
-                    Icons.Default.ExitToApp,
-                    contentDescription = "History")
+                Image(
+                    painter = painterResource(
+                        id = R.drawable.archive
+                    ),
+                    contentDescription = "Imagem",
+                    contentScale = ContentScale.Crop,
+                    colorFilter = ColorFilter.tint(
+                        color = Color.Black,
+                    ),
+                )
             },
             label = {
-                Text("History")
+                Text(stringResource(R.string.history))
             }
         )
 
@@ -133,7 +151,7 @@ fun NavigationBarPreview() {
                     contentDescription = "Profile"
                 ) },
             label = {
-                Text("Profile")
+                Text(stringResource(R.string.profile))
             }
         )
     }
